@@ -1,0 +1,239 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Birthday memo</title>
+    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
+    
+    <style>
+        /* إعدادات الخلفية الراقية */
+        body {
+            margin: 0;
+            padding: 0;
+            background: linear-gradient(135deg, #0f172a, #1e1b4b, #311042);
+            font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            overflow: hidden;
+            position: relative;
+        }
+
+        /* كارت الزجاج الاحترافي (Glassmorphism) */
+        .premium-card {
+            background: rgba(255, 255, 255, 0.03);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            padding: 50px 40px;
+            border-radius: 32px;
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5), 
+                        inset 0 1px 1px rgba(255, 255, 255, 0.1);
+            text-align: center;
+            max-width: 480px;
+            width: 85%;
+            z-index: 10;
+            transform: translateY(20px);
+            opacity: 0;
+            animation: fadeInCard 1.5s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+        }
+
+        @keyframes fadeInCard {
+            to {
+                transform: translateY(0);
+                opacity: 1;
+            }
+        }
+
+        /* إطار الصورة الفخم والتأثير التفاعلي */
+        .avatar-wrapper {
+            position: relative;
+            width: 200px;
+            height: 200px;
+            margin: 0 auto 35px;
+        }
+
+        .avatar-frame {
+            width: 100%;
+            height: 100%;
+            border-radius: 50%;
+            overflow: hidden;
+            border: 2px solid rgba(255, 255, 255, 0.15);
+            box-shadow: 0 0 30px rgba(236, 72, 153, 0.2);
+            transition: all 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        .avatar-frame img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.6s ease;
+        }
+
+        /* توهج خلفي ناعم للصورة */
+        .avatar-wrapper::after {
+            content: '';
+            position: absolute;
+            inset: -5px;
+            border-radius: 50%;
+            background: linear-gradient(45deg, #ec4899, #8b5cf6);
+            z-index: -1;
+            opacity: 0.4;
+            filter: blur(15px);
+            transition: opacity 0.6s;
+        }
+
+        /* حركات الـ Hover الاحترافية */
+        .avatar-wrapper:hover .avatar-frame {
+            transform: scale(1.04);
+            border-color: rgba(255, 255, 255, 0.4);
+            box-shadow: 0 0 40px rgba(236, 72, 153, 0.4);
+        }
+
+        .avatar-wrapper:hover .avatar-frame img {
+            transform: scale(1.08);
+        }
+
+        .avatar-wrapper:hover::after {
+            opacity: 0.7;
+        }
+
+        /* الخطوط العريضة والنصوص */
+        h1 {
+            background: linear-gradient(to right, #ffffff, #f472b6, #c084fc);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            font-size: 2.2rem;
+            font-weight: 700;
+            margin: 0 0 15px 0;
+            letter-spacing: -0.5px;
+        }
+
+        .subtitle {
+            color: rgba(255, 255, 255, 0.5);
+            font-size: 0.95rem;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            margin-bottom: 25px;
+            display: block;
+        }
+
+        p {
+            color: rgba(255, 255, 255, 0.8);
+            font-size: 1.1rem;
+            line-height: 1.8;
+            margin: 0 0 35px 0;
+            font-weight: 300;
+        }
+
+        /* الزر الأنيق جداً */
+        .premium-btn {
+            background: linear-gradient(135deg, #ec4899, #a855f7);
+            color: white;
+            border: none;
+            padding: 14px 35px;
+            font-size: 1rem;
+            font-weight: 600;
+            border-radius: 50px;
+            cursor: pointer;
+            box-shadow: 0 10px 20px -5px rgba(236, 72, 153, 0.4);
+            transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+            letter-spacing: 0.5px;
+        }
+
+        .premium-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 15px 25px -5px rgba(236, 72, 153, 0.6);
+            background: linear-gradient(135deg, #f472b6, #c084fc);
+        }
+
+        .premium-btn:active {
+            transform: translateY(-1px);
+        }
+
+        /* الجزيئات الهادئة في الخلفية */
+        .particle {
+            position: absolute;
+            background: white;
+            border-radius: 50%;
+            pointer-events: none;
+            opacity: 0;
+            animation: floatParticle 6s ease-in-out infinite;
+        }
+
+        @keyframes floatParticle {
+            0% { transform: translateY(100vh) scale(0); opacity: 0; }
+            50% { opacity: 0.4; }
+            100% { transform: translateY(-10vh) scale(1); opacity: 0; }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="premium-card">
+        <div class="avatar-wrapper">
+            <div class="avatar-frame">
+                <img src="photo.jpeg" alt="Memory">
+            </div>
+        </div>
+
+        <h1>Happy Birthday </h1>
+        <span class="subtitle">To the most beautiful Memo</span>
+        
+        <p>كل سنة و انتي طيبة ي صحبتي و يرب تكون سنه سعيده عليكي و تحققي  كل الي كان نفسك تعمليه السنه الي فاتت و نفضل مع بعض طول العمر ي اجدع و احلى ميمو </p>
+        
+        <button class="premium-btn" onclick="triggerMagic()">play fireworks🎆</button>
+    </div>
+
+    <script>
+        // جزيئات النجوم الهادئة في الخلفية
+        function createBackgroundParticles() {
+            const particleCount = 30;
+            for (let i = 0; i < particleCount; i++) {
+                const particle = document.createElement('div');
+                particle.classList.add('particle');
+                particle.style.left = Math.random() * 100 + 'vw';
+                const size = Math.random() * 3 + 2;
+                particle.style.width = `${size}px`;
+                particle.style.height = `${size}px`;
+                particle.style.animationDuration = (Math.random() * 4 + 6) + 's'; 
+                particle.style.animationDelay = (Math.random() * 5) + 's';
+                particle.style.background = 'rgba(255,255,255,0.3)';
+                document.body.appendChild(particle);
+            }
+        }
+
+        window.onload = createBackgroundParticles;
+
+        // دالة إطلاق الألعاب النارية الاحترافية المتكررة عند الضغط
+        function triggerMagic() {
+            const duration = 5 * 1000; // الألعاب النارية هتستمر لمدة 5 ثواني
+            const animationEnd = Date.now() + duration;
+            const defaults = { startVelocity: 30, spread: 360, ticks: 60, zIndex: 0 };
+
+            function randomInRange(min, max) {
+                return Math.random() * (max - min) + min;
+            }
+
+            // تكرار الانفجارات بشكل متتالي سريع ومبهج
+            const interval = setInterval(function() {
+                const timeLeft = animationEnd - Date.now();
+
+                if (timeLeft <= 0) {
+                    return clearInterval(interval);
+                }
+
+                const particleCount = 50 * (timeLeft / duration);
+                
+                // انفجار أول من اليسار
+                confetti({ ...defaults, particleCount, origin: { x: randomInRange(0.1, 0.3), y: Math.random() - 0.2 } });
+                // انفجار تاني من اليمين
+                confetti({ ...defaults, particleCount, origin: { x: randomInRange(0.7, 0.9), y: Math.random() - 0.2 } });
+            }, 250);
+        }
+    </script>
+
+</body>
+</html>
